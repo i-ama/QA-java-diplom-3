@@ -15,6 +15,8 @@ public class AuthorizationForm {
     private static final By loginButton = By.xpath("//*[@id='root']/div/main/div/form/button");
     private static final By registrationLink = By.xpath("//*[@id='root']/div/main/div/div/p[1]/a");
     private static final By resetPasswordLink = By.xpath("//*[@id='root']/div/main/div/div/p[2]/a");
+    private static final By loginHeaderText = By.cssSelector("#root > div > main > div > h2");
+
 
     public void emailFieldInput(String email) {
         driver.findElement(emailField).sendKeys(email);
@@ -36,4 +38,7 @@ public class AuthorizationForm {
         driver.findElement(resetPasswordLink).click();
     }
 
+    public boolean isLoginHeaderTextDisplayed() {
+        return driver.findElement(loginHeaderText).isDisplayed();
+    }
 }

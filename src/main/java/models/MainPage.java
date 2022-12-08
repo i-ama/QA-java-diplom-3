@@ -53,4 +53,8 @@ public class MainPage {
     public boolean isFillingSectionHighlighted() {
         return driver.findElement(fillingSection).getCssValue("box-shadow").equals("inset 0 -1px 0 #2f2f37");
     }
+
+    public void open() {
+        driver.get(URL);
+    }
 }
