@@ -32,8 +32,6 @@ public class AuthorizationForm {
 
     public void loginButtonClick() {
         driver.findElement(loginButton).click();
-        driver.findElement(loginButton).click();
-
     }
 
     public void registrationLinkClick() {
