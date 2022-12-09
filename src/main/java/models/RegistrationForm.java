@@ -14,6 +14,7 @@ public class RegistrationForm {
     private static final By emailField = By.xpath("//*[@id='root']/div/main/div/form/fieldset[2]/div/div/input");
     private static final By passwordField = By.xpath("//*[@id='root']/div/main/div/form/fieldset[3]/div/div/input");
     private static final By registrationButton = By.xpath("//*[@id='root']/div/main/div/form/button");
+    private static final By loginLink = By.xpath("//*[@id='root']/div/main/div/div/p/a");
     private static final By incorrectPasswordHint = By.xpath("//*[@id='root']/div/main/div/form/fieldset[3]/div/p");
 
     public void nameFieldInput(String name) {
@@ -30,6 +31,10 @@ public class RegistrationForm {
 
     public void registrationButtonClick() {
         driver.findElement(registrationButton).click();
+    }
+
+    public void loginLinkClick() {
+        driver.findElement(loginLink).click();
     }
 
     public boolean isIncorrectPasswordHintDisplayed() {

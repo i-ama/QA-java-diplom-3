@@ -10,6 +10,7 @@ public class MainPage {
         this.driver = driver;
     }
     private static final String URL = "https://stellarburgers.nomoreparties.site/";
+    private static final By createBurgerText = By.cssSelector("h1");
     private static final By loginAccountButton = By.xpath("//*[@id='root']/div/main/section[2]/div/button");
     private static final By personalAccountButton = By.xpath("//*[@id='root']/div/header/nav/a/p");
     private static final By constructorButton = By.xpath("//*[@id='root']/div/header/nav/ul/li[1]/a/p");
@@ -18,6 +19,9 @@ public class MainPage {
     private static final By sauceSection = By.xpath("//*[@id=\"root\"]/div/main/section[1]/div[1]/div[2]");
     private static final By fillingSection = By.xpath("//*[@id=\"root\"]/div/main/section[1]/div[1]/div[3]");
 
+    public boolean isCreateBurgerTextDisplayed() {
+        return driver.findElement(createBurgerText).isDisplayed();
+    }
     public void loginAccountButtonClick() {
         driver.findElement(loginAccountButton).click();
     }

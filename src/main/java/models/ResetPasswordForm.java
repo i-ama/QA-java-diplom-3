@@ -12,6 +12,7 @@ public class ResetPasswordForm {
 
     private static final By emailField = By.xpath("//*[@id='root']/div/main/div/form/fieldset/div/div/input");
     private static final By resetButton = By.xpath("//*[@id='root']/div/main/div/form/button");
+    private static final By loginLink = By.xpath("//*[@id='root']/div/main/div/div/p/a");
 
     public void emailFieldInput(String email) {
         driver.findElement(emailField).sendKeys(email);
@@ -19,6 +20,9 @@ public class ResetPasswordForm {
 
     public void resetButtonClick() {
         driver.findElement(resetButton).click();
+    }
+    public void loginLinkClick() {
+        driver.findElement(loginLink).click();
     }
 
 }
