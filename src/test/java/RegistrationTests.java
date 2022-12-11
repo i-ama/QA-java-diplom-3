@@ -21,14 +21,15 @@ public class RegistrationTests {
     private WebDriver driver;
     private String propertyPath;
     private String optionPath;
-    static private String email = RandomStringUtils.randomAlphabetic(5).toLowerCase(Locale.ROOT) + "@ru.ru";
-    static private String password = RandomStringUtils.randomAlphabetic(6);
-    static private String name = RandomStringUtils.randomAlphabetic(7);
+    static String email;
+    static String password = RandomStringUtils.randomAlphabetic(6);
+    static String name = RandomStringUtils.randomAlphabetic(7);
     static private String passwordLessThenSixSymbols = RandomStringUtils.randomAlphabetic(5);
 
-    public RegistrationTests(String propertyPath, String optionPath) {
+    public RegistrationTests(String propertyPath, String optionPath, String email) {
         this.propertyPath = propertyPath;
         this.optionPath = optionPath;
+        this.email = email;
     }
 
     // Для propertyPath необходимо использовать актуальную версию WebDriver для браузеров на тестовой машине
@@ -36,8 +37,8 @@ public class RegistrationTests {
     @Parameterized.Parameters
     public static Object[][]  getTestData() {
         return new Object[][] {
-                {"src\\main\\resources\\YandexChromeDriver.exe", "C:\\Users\\igory\\AppData\\Local\\Yandex\\YandexBrowser\\Application\\browser.exe"},
-                {"src\\main\\resources\\ChromeDriver.exe", "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe"},
+                {"src\\main\\resources\\YandexChromeDriver.exe", "C:\\Users\\igory\\AppData\\Local\\Yandex\\YandexBrowser\\Application\\browser.exe", RandomStringUtils.randomAlphabetic(5).toLowerCase(Locale.ROOT) + "@ru.ru"},
+                {"src\\main\\resources\\ChromeDriver.exe", "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe", RandomStringUtils.randomAlphabetic(5).toLowerCase(Locale.ROOT) + "@ru.su"},
         };
     }
 
@@ -48,7 +49,7 @@ public class RegistrationTests {
         ChromeOptions options = new ChromeOptions();
         options.setBinary(optionPath);
         driver = new ChromeDriver(options);
-        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+        driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
     }
 
     @After
@@ -61,15 +62,18 @@ public class RegistrationTests {
     public void successRegistration() {
         MainPage mainPage = new MainPage(driver);
         mainPage.open();
+        mainPage.isMakeBurgerTextDisplayed();
         mainPage.personalAccountButtonClick();
         AuthorizationForm authorizationForm = new AuthorizationForm(driver);
+        authorizationForm.isLoginTextDisplayed();
         authorizationForm.registrationLinkClick();
         RegistrationForm registrationForm = new RegistrationForm(driver);
+        registrationForm.isRegistrationTextDisplayed();
         registrationForm.nameFieldInput(name);
-        registrationForm.emailFieldInput(email);
+        registrationForm.emailFieldInput(email + "1");
         registrationForm.passwordFieldInput(password);
         registrationForm.registrationButtonClick();
-        boolean actualResult = authorizationForm.isLoginHeaderTextDisplayed();
+        boolean actualResult = authorizationForm.isLoginTextDisplayed();
         Assert.assertTrue("Registration was not successful", actualResult);
     }
 
@@ -78,12 +82,15 @@ public class RegistrationTests {
     public void registrationWithWrongPassword() {
         MainPage mainPage = new MainPage(driver);
         mainPage.open();
+        mainPage.isCreateBurgerTextDisplayed();
         mainPage.personalAccountButtonClick();
         AuthorizationForm authorizationForm = new AuthorizationForm(driver);
+        authorizationForm.isLoginTextDisplayed();
         authorizationForm.registrationLinkClick();
         RegistrationForm registrationForm = new RegistrationForm(driver);
+        registrationForm.isRegistrationTextDisplayed();
         registrationForm.nameFieldInput(name);
-        registrationForm.emailFieldInput(email);
+        registrationForm.emailFieldInput(email + "2");
         registrationForm.passwordFieldInput(passwordLessThenSixSymbols);
         registrationForm.registrationButtonClick();
         boolean actualResult = registrationForm.isIncorrectPasswordHintDisplayed();

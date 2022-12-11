@@ -40,7 +40,7 @@ public class ConstructorTests {
         ChromeOptions options = new ChromeOptions();
         options.setBinary(optionPath);
         driver = new ChromeDriver(options);
-        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+        driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
     }
 
     @After
@@ -53,7 +53,6 @@ public class ConstructorTests {
     public void switchToSauceSection() {
         MainPage mainPage = new MainPage(driver);
         mainPage.open();
-        mainPage.logoButtonClick();
         mainPage.isCreateBurgerTextDisplayed();
         mainPage.sauceSectionClick();
         boolean actualResult = mainPage.isSauceSectionHighlighted();
@@ -65,7 +64,6 @@ public class ConstructorTests {
     public void switchToFillingSection() {
         MainPage mainPage = new MainPage(driver);
         mainPage.open();
-        mainPage.logoButtonClick();
         mainPage.isCreateBurgerTextDisplayed();
         mainPage.fillingSectionClick();
         boolean actualResult = mainPage.isFillingSectionHighlighted();
@@ -77,7 +75,6 @@ public class ConstructorTests {
     public void switchToBunSection() {
         MainPage mainPage = new MainPage(driver);
         mainPage.open();
-        mainPage.logoButtonClick();
         mainPage.isCreateBurgerTextDisplayed();
         mainPage.fillingSectionClick();
         mainPage.bunSectionClick();

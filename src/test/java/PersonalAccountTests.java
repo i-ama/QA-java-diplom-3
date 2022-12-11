@@ -22,13 +22,14 @@ public class PersonalAccountTests {
     private WebDriver driver;
     private String propertyPath;
     private String optionPath;
-    static private String email = RandomStringUtils.randomAlphabetic(5).toLowerCase(Locale.ROOT) + "@ru.ru";
+    static String email;
     static private String password = RandomStringUtils.randomAlphabetic(6);
     static private String name = RandomStringUtils.randomAlphabetic(7);
 
-    public PersonalAccountTests(String propertyPath, String optionPath) {
+    public PersonalAccountTests(String propertyPath, String optionPath, String email) {
         this.propertyPath = propertyPath;
         this.optionPath = optionPath;
+        this.email = email;
     }
 
     // Для propertyPath необходимо использовать актуальную версию WebDriver для браузеров на тестовой машине
@@ -36,8 +37,8 @@ public class PersonalAccountTests {
     @Parameterized.Parameters
     public static Object[][]  getTestData() {
         return new Object[][] {
-                {"src\\main\\resources\\YandexChromeDriver.exe", "C:\\Users\\igory\\AppData\\Local\\Yandex\\YandexBrowser\\Application\\browser.exe"},
-                {"src\\main\\resources\\ChromeDriver.exe", "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe"},
+                {"src\\main\\resources\\YandexChromeDriver.exe", "C:\\Users\\igory\\AppData\\Local\\Yandex\\YandexBrowser\\Application\\browser.exe", RandomStringUtils.randomAlphabetic(5).toLowerCase(Locale.ROOT) + "@ru.ru"},
+                {"src\\main\\resources\\ChromeDriver.exe", "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe", RandomStringUtils.randomAlphabetic(5).toLowerCase(Locale.ROOT) + "@ru.su"},
         };
     }
 
@@ -48,7 +49,7 @@ public class PersonalAccountTests {
         ChromeOptions options = new ChromeOptions();
         options.setBinary(optionPath);
         driver = new ChromeDriver(options);
-        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+        driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
     }
 
     @After
@@ -61,19 +62,26 @@ public class PersonalAccountTests {
     public void switchToPersonalAccountPage() {
         MainPage mainPage = new MainPage(driver);
         mainPage.open();
+        mainPage.isMakeBurgerTextDisplayed();
         mainPage.personalAccountButtonClick();
         AuthorizationForm authorizationForm = new AuthorizationForm(driver);
+        authorizationForm.isLoginTextDisplayed();
         authorizationForm.registrationLinkClick();
         RegistrationForm registrationForm = new RegistrationForm(driver);
+        registrationForm.isRegistrationTextDisplayed();
         registrationForm.nameFieldInput(name);
-        registrationForm.emailFieldInput(email);
+        registrationForm.emailFieldInput(email + "1");
         registrationForm.passwordFieldInput(password);
         registrationForm.registrationButtonClick();
+        authorizationForm.isLoginTextDisplayed();
         mainPage.logoButtonClick();
+        mainPage.isMakeBurgerTextDisplayed();
         mainPage.personalAccountButtonClick();
-        authorizationForm.emailFieldInput(email);
+        authorizationForm.isLoginTextDisplayed();
+        authorizationForm.emailFieldInput(email + "1");
         authorizationForm.passwordFieldInput(password);
         authorizationForm.loginButtonClick();
+        mainPage.isMakeBurgerTextDisplayed();
         mainPage.personalAccountButtonClick();
         PersonalAccountPage personalAccountPage = new PersonalAccountPage(driver);
         boolean actualResult = personalAccountPage.isYouCanChangePersonalDataHintDisplayed();
@@ -85,22 +93,30 @@ public class PersonalAccountTests {
     public void switchToMainPageFromPersonalAccountViaLogo() {
         MainPage mainPage = new MainPage(driver);
         mainPage.open();
+        mainPage.isMakeBurgerTextDisplayed();
         mainPage.personalAccountButtonClick();
         AuthorizationForm authorizationForm = new AuthorizationForm(driver);
+        authorizationForm.isLoginTextDisplayed();
         authorizationForm.registrationLinkClick();
         RegistrationForm registrationForm = new RegistrationForm(driver);
+        registrationForm.isRegistrationTextDisplayed();
         registrationForm.nameFieldInput(name);
-        registrationForm.emailFieldInput(email);
+        registrationForm.emailFieldInput(email + "2");
         registrationForm.passwordFieldInput(password);
         registrationForm.registrationButtonClick();
+        authorizationForm.isLoginTextDisplayed();
         mainPage.logoButtonClick();
+        mainPage.isMakeBurgerTextDisplayed();
         mainPage.personalAccountButtonClick();
-        authorizationForm.emailFieldInput(email);
+        authorizationForm.isLoginTextDisplayed();
+        authorizationForm.emailFieldInput(email + "2");
         authorizationForm.passwordFieldInput(password);
         authorizationForm.loginButtonClick();
+        mainPage.isMakeBurgerTextDisplayed();
         mainPage.personalAccountButtonClick();
         PersonalAccountPage personalAccountPage = new PersonalAccountPage(driver);
-        personalAccountPage.logoButtonClick();
+        personalAccountPage.isYouCanChangePersonalDataHintDisplayed();
+        mainPage.logoButtonClick();
         boolean actualResult = mainPage.isCreateBurgerTextDisplayed();
         Assert.assertTrue("Main page was not displayed", actualResult);
     }
@@ -110,21 +126,29 @@ public class PersonalAccountTests {
     public void switchToMainPageFromPersonalAccountViaConstructor() {
         MainPage mainPage = new MainPage(driver);
         mainPage.open();
+        mainPage.isMakeBurgerTextDisplayed();
         mainPage.personalAccountButtonClick();
         AuthorizationForm authorizationForm = new AuthorizationForm(driver);
+        authorizationForm.isLoginTextDisplayed();
         authorizationForm.registrationLinkClick();
         RegistrationForm registrationForm = new RegistrationForm(driver);
+        registrationForm.isRegistrationTextDisplayed();
         registrationForm.nameFieldInput(name);
-        registrationForm.emailFieldInput(email);
+        registrationForm.emailFieldInput(email + "3");
         registrationForm.passwordFieldInput(password);
         registrationForm.registrationButtonClick();
+        authorizationForm.isLoginTextDisplayed();
         mainPage.logoButtonClick();
+        mainPage.isMakeBurgerTextDisplayed();
         mainPage.personalAccountButtonClick();
-        authorizationForm.emailFieldInput(email);
+        authorizationForm.isLoginTextDisplayed();
+        authorizationForm.emailFieldInput(email + "3");
         authorizationForm.passwordFieldInput(password);
         authorizationForm.loginButtonClick();
+        mainPage.isMakeBurgerTextDisplayed();
         mainPage.personalAccountButtonClick();
         PersonalAccountPage personalAccountPage = new PersonalAccountPage(driver);
+        personalAccountPage.isYouCanChangePersonalDataHintDisplayed();
         personalAccountPage.constructorButtonClick();
         boolean actualResult = mainPage.isCreateBurgerTextDisplayed();
         Assert.assertTrue("Main page was not displayed", actualResult);
@@ -135,24 +159,31 @@ public class PersonalAccountTests {
     public void logoutOnPersonalAccountPage() {
         MainPage mainPage = new MainPage(driver);
         mainPage.open();
+        mainPage.isMakeBurgerTextDisplayed();
         mainPage.personalAccountButtonClick();
         AuthorizationForm authorizationForm = new AuthorizationForm(driver);
+        authorizationForm.isLoginTextDisplayed();
         authorizationForm.registrationLinkClick();
         RegistrationForm registrationForm = new RegistrationForm(driver);
+        registrationForm.isRegistrationTextDisplayed();
         registrationForm.nameFieldInput(name);
-        registrationForm.emailFieldInput(email);
+        registrationForm.emailFieldInput(email + "4");
         registrationForm.passwordFieldInput(password);
         registrationForm.registrationButtonClick();
+        authorizationForm.isLoginTextDisplayed();
         mainPage.logoButtonClick();
+        mainPage.isMakeBurgerTextDisplayed();
         mainPage.personalAccountButtonClick();
-        authorizationForm.emailFieldInput(email);
+        authorizationForm.isLoginTextDisplayed();
+        authorizationForm.emailFieldInput(email + "4");
         authorizationForm.passwordFieldInput(password);
         authorizationForm.loginButtonClick();
         mainPage.isCreateBurgerTextDisplayed();
         mainPage.personalAccountButtonClick();
         PersonalAccountPage personalAccountPage = new PersonalAccountPage(driver);
+        personalAccountPage.isYouCanChangePersonalDataHintDisplayed();
         personalAccountPage.exitButtonClick();
-        boolean actualResult = authorizationForm.isLoginHeaderTextDisplayed();
+        boolean actualResult = authorizationForm.isLoginTextDisplayed();
         Assert.assertTrue("Authorization page was not displayed", actualResult);
     }
 }
